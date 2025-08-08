@@ -1,0 +1,904 @@
+{
+  "cpp_17__structured_bindings": {
+    "prefix": "cpp_17__structured_bindings",
+    "body": [
+      "// C++17: Structured bindings",
+      "#include <tuple>",
+      "#include <map>",
+      "",
+      "// With std::pair/tuple",
+      "std::pair<int, std::string> p = {42, \"hello\"};",
+      "auto [id, name] = p;",
+      "",
+      "// With std::tuple",
+      "std::tuple<int, double, std::string> t{1, 3.14, \"world\"};",
+      "auto [x, y, z] = t;",
+      "",
+      "// With structs",
+      "struct Point { int x, y; };",
+      "Point pt{10, 20};",
+      "auto [px, py] = pt;",
+      "",
+      "// In range-based for with maps",
+      "std::map<std::string, int> m = {{\"a\", 1}, {\"b\", 2}};",
+      "for (const auto& [key, value] : m) {",
+      "    std::cout << key << \": \" << value << std::endl;",
+      "}",
+      "$0"
+    ],
+    "description": "C++17 structured bindings"
+  },
+
+  "cpp_17__if_constexpr": {
+    "prefix": "cpp_17__if_constexpr",
+    "body": [
+      "// C++17: if constexpr",
+      "#include <type_traits>",
+      "",
+      "template<typename T>",
+      "auto process(T value) {",
+      "    if constexpr (std::is_integral_v<T>) {",
+      "        return value + 1;",
+      "    } else if constexpr (std::is_floating_point_v<T>) {",
+      "        return value * 2.0;",
+      "    } else {",
+      "        return value;",
+      "    }",
+      "}",
+      "$0"
+    ],
+    "description": "C++17 if constexpr"
+  },
+
+  "cpp_17__fold_expressions": {
+    "prefix": "cpp_17__fold_expressions",
+    "body": [
+      "// C++17: Fold expressions",
+      "",
+      "template<typename... Args>",
+      "auto sum(Args... args) {",
+      "    return (... + args); // Left fold",
+      "}",
+      "",
+      "template<typename... Args>",
+      "void print(Args... args) {",
+      "    ((std::cout << args << \" \"), ...);",
+      "}",
+      "$0"
+    ],
+    "description": "C++17 fold expressions"
+  },
+
+  "cpp_17__optional": {
+    "prefix": "cpp_17__optional",
+    "body": [
+      "// C++17: std::optional",
+      "#include <optional>",
+      "",
+      "std::optional<int> divide(int a, int b) {",
+      "    if (b == 0) return std::nullopt;",
+      "    return a / b;",
+      "}",
+      "",
+      "auto result = divide(10, 2);",
+      "if (result) {",
+      "    std::cout << \"Result: \" << *result << std::endl;",
+      "}",
+      "std::cout << \"Value or default: \" << result.value_or(-1) << std::endl;",
+      "$0"
+    ],
+    "description": "C++17 std::optional"
+  },
+
+  "cpp_17__variant": {
+    "prefix": "cpp_17__variant",
+    "body": [
+      "// C++17: std::variant",
+      "#include <variant>",
+      "",
+      "std::variant<int, double, std::string> v = \"hello\";",
+      "",
+      "// Visit pattern",
+      "std::visit([](auto&& arg) {",
+      "    using T = std::decay_t<decltype(arg)>;",
+      "    if constexpr (std::is_same_v<T, int>)",
+      "        std::cout << \"int: \" << arg << std::endl;",
+      "    else if constexpr (std::is_same_v<T, double>)",
+      "        std::cout << \"double: \" << arg << std::endl;",
+      "    else",
+      "        std::cout << \"string: \" << arg << std::endl;",
+      "}, v);",
+      "$0"
+    ],
+    "description": "C++17 std::variant"
+  },
+
+  "cpp_17__string_view": {
+    "prefix": "cpp_17__string_view",
+    "body": [
+      "// C++17: std::string_view",
+      "#include <string_view>",
+      "",
+      "void process(std::string_view sv) {",
+      "    std::cout << sv << \" (len=\" << sv.length() << \")\" << std::endl;",
+      "}",
+      "",
+      "process(\"literal\");",
+      "std::string str = \"string\";",
+      "process(str);",
+      "process(std::string_view(str.data(), 3)); // \"str\"",
+      "$0"
+    ],
+    "description": "C++17 std::string_view"
+  },
+
+  "cpp_17__filesystem": {
+    "prefix": "cpp_17__filesystem",
+    "body": [
+      "// C++17: std::filesystem",
+      "#include <filesystem>",
+      "namespace fs = std::filesystem;",
+      "",
+      "fs::path p = \"path/to/file.txt\";",
+      "std::cout << \"Exists: \" << fs::exists(p) << std::endl;",
+      "std::cout << \"Filename: \" << p.filename() << std::endl;",
+      "std::cout << \"Extension: \" << p.extension() << std::endl;",
+      "",
+      "// Iterate directory",
+      "for (const auto& entry : fs::directory_iterator(\".\")) {",
+      "    std::cout << entry.path() << std::endl;",
+      "}",
+      "$0"
+    ],
+    "description": "C++17 std::filesystem"
+  },
+
+  "cpp_17__init_if": {
+    "prefix": "cpp_17__init_if",
+    "body": [
+      "// C++17: if/switch with initializer",
+      "",
+      "// if with initializer",
+      "if (auto it = map.find(key); it != map.end()) {",
+      "    use(it->second);",
+      "}",
+      "",
+      "// Useful with locks",
+      "if (std::lock_guard lock(mutex); condition) {",
+      "    // locked scope",
+      "}",
+      "$0"
+    ],
+    "description": "C++17 if with initializer"
+  },
+
+  "cpp_17__inline_variables": {
+    "prefix": "cpp_17__inline_variables",
+    "body": [
+      "// C++17: Inline variables",
+      "",
+      "// In header file:",
+      "class Config {",
+      "public:",
+      "    inline static int max_connections = 100;",
+      "    inline static const std::string version = \"1.0\";",
+      "};",
+      "",
+      "// Can be defined in header, ODR-safe",
+      "inline constexpr int global_constant = 42;",
+      "$0"
+    ],
+    "description": "C++17 inline variables"
+  },
+
+  "cpp_17__nested_namespaces": {
+    "prefix": "cpp_17__nested_namespaces",
+    "body": [
+      "// C++17: Nested namespace definition",
+      "",
+      "// Old way (C++14 and before)",
+      "namespace A {",
+      "namespace B {",
+      "namespace C {",
+      "    void func() {}",
+      "}}}",
+      "",
+      "// New way (C++17)",
+      "namespace A::B::C {",
+      "    void func() {}",
+      "}",
+      "$0"
+    ],
+    "description": "C++17 nested namespaces"
+  },
+
+  "cpp_17__class_template_deduction": {
+    "prefix": "cpp_17__class_template_deduction",
+    "body": [
+      "// C++17: Class template argument deduction (CTAD)",
+      "",
+      "// Before C++17",
+      "std::pair<int, double> p1(1, 2.3);",
+      "std::vector<int> v1 = {1, 2, 3};",
+      "",
+      "// C++17 CTAD",
+      "std::pair p2(1, 2.3);           // deduced as pair<int, double>",
+      "std::vector v2 = {1, 2, 3};     // deduced as vector<int>",
+      "std::lock_guard lg(mutex);      // deduced template argument",
+      "",
+      "// Custom deduction guide",
+      "template<typename T>",
+      "struct Container {",
+      "    Container(T t) {}",
+      "};",
+      "Container c = 5; // deduced as Container<int>",
+      "$0"
+    ],
+    "description": "C++17 class template argument deduction"
+  },
+
+  "cpp_17__constexpr_lambda": {
+    "prefix": "cpp_17__constexpr_lambda",
+    "body": [
+      "// C++17: constexpr lambda",
+      "",
+      "// Implicitly constexpr",
+      "auto square = [](int n) { return n * n; };",
+      "constexpr int result = square(5);",
+      "",
+      "// Explicitly constexpr",
+      "auto factorial = [](int n) constexpr -> int {",
+      "    return n <= 1 ? 1 : n * factorial(n - 1);",
+      "};",
+      "constexpr int fact5 = factorial(5);",
+      "$0"
+    ],
+    "description": "C++17 constexpr lambda"
+  },
+
+  "cpp_17__attributes": {
+    "prefix": "cpp_17__attributes",
+    "body": [
+      "// C++17: New attributes",
+      "",
+      "// [[nodiscard]] - warn if return value ignored",
+      "[[nodiscard]] int important_result() { return 42; }",
+      "",
+      "// [[maybe_unused]] - suppress unused warnings",
+      "[[maybe_unused]] void debug_function() {}",
+      "",
+      "// [[fallthrough]] - intentional switch fallthrough",
+      "switch (x) {",
+      "case 1:",
+      "    do_something();",
+      "    [[fallthrough]];",
+      "case 2:",
+      "    do_something_else();",
+      "    break;",
+      "}",
+      "$0"
+    ],
+    "description": "C++17 attributes"
+  },
+
+  "cpp_17__parallel_algorithms": {
+    "prefix": "cpp_17__parallel_algorithms",
+    "body": [
+      "// C++17: Parallel algorithms",
+      "#include <algorithm>",
+      "#include <execution>",
+      "#include <vector>",
+      "",
+      "std::vector<int> v = {3, 1, 4, 1, 5, 9};",
+      "",
+      "// Sequential (default)",
+      "std::sort(v.begin(), v.end());",
+      "",
+      "// Parallel",
+      "std::sort(std::execution::par, v.begin(), v.end());",
+      "",
+      "// Parallel unsequenced",
+      "std::sort(std::execution::par_unseq, v.begin(), v.end());",
+      "",
+      "// Works with many algorithms",
+      "auto sum = std::reduce(std::execution::par,",
+      "                      v.begin(), v.end(), 0);",
+      "$0"
+    ],
+    "description": "C++17 parallel algorithms"
+  },
+
+  "cpp_17__guaranteed_copy_elision": {
+    "prefix": "cpp_17__guaranteed_copy_elision",
+    "body": [
+      "// C++17: Guaranteed copy elision",
+      "",
+      "struct Heavy {",
+      "    Heavy() { std::cout << \"Default\\n\"; }",
+      "    Heavy(const Heavy&) { std::cout << \"Copy\\n\"; }",
+      "    Heavy(Heavy&&) { std::cout << \"Move\\n\"; }",
+      "};",
+      "",
+      "Heavy make_heavy() { return Heavy{}; }",
+      "",
+      "// C++17 guarantees no copy/move here",
+      "Heavy h = make_heavy(); // Only \"Default\" printed",
+      "",
+      "// Direct initialization from temporary",
+      "Heavy h2 = Heavy{}; // Only \"Default\" printed",
+      "$0"
+    ],
+    "description": "C++17 guaranteed copy elision"
+  },
+
+  "cpp_17__std_any": {
+    "prefix": "cpp_17__std_any",
+    "body": [
+      "// C++17: std::any",
+      "#include <any>",
+      "#include <typeinfo>",
+      "",
+      "std::any a = 1;",
+      "std::cout << a.type().name() << \": \" << std::any_cast<int>(a) << std::endl;",
+      "",
+      "a = 3.14;",
+      "std::cout << a.type().name() << \": \" << std::any_cast<double>(a) << std::endl;",
+      "",
+      "a = std::string(\"hello\");",
+      "auto s = std::any_cast<std::string>(a);",
+      "",
+      "// Check if contains value",
+      "if (a.has_value()) {",
+      "    // Safe cast with pointer",
+      "    if (auto* ptr = std::any_cast<std::string>(&a)) {",
+      "        std::cout << *ptr << std::endl;",
+      "    }",
+      "}",
+      "$0"
+    ],
+    "description": "C++17 std::any"
+  },
+
+  "cpp_17__std_byte": {
+    "prefix": "cpp_17__std_byte",
+    "body": [
+      "// C++17: std::byte",
+      "#include <cstddef>",
+      "",
+      "std::byte b{42};",
+      "std::byte b2{0b11110000};",
+      "",
+      "// Bitwise operations",
+      "b = b | std::byte{0x0F};",
+      "b = b & std::byte{0xF0};",
+      "b = b ^ std::byte{0xFF};",
+      "b = ~b;",
+      "",
+      "// Convert to/from integer",
+      "auto value = std::to_integer<int>(b);",
+      "std::byte b3{static_cast<std::byte>(255)};",
+      "",
+      "// Array of bytes",
+      "std::byte data[4] = {",
+      "    std::byte{0x12}, std::byte{0x34},",
+      "    std::byte{0x56}, std::byte{0x78}",
+      "};",
+      "$0"
+    ],
+    "description": "C++17 std::byte"
+  },
+
+  "cpp_17__deduction_guides": {
+    "prefix": "cpp_17__deduction_guides",
+    "body": [
+      "// C++17: Deduction guides",
+      "",
+      "template<typename T>",
+      "class MyContainer {",
+      "    T* data;",
+      "    std::size_t size;",
+      "public:",
+      "    MyContainer(T* ptr, std::size_t s) : data(ptr), size(s) {}",
+      "};",
+      "",
+      "// Deduction guide",
+      "template<typename T>",
+      "MyContainer(T*, std::size_t) -> MyContainer<T>;",
+      "",
+      "// Usage",
+      "int arr[] = {1, 2, 3};",
+      "MyContainer c(arr, 3); // Deduced as MyContainer<int>",
+      "",
+      "// Iterator deduction guide example",
+      "template<typename Iter>",
+      "MyContainer(Iter, Iter) -> MyContainer<",
+      "    typename std::iterator_traits<Iter>::value_type>;",
+      "$0"
+    ],
+    "description": "C++17 deduction guides"
+  },
+
+  "cpp_17__std_invoke": {
+    "prefix": "cpp_17__std_invoke",
+    "body": [
+      "// C++17: std::invoke",
+      "#include <functional>",
+      "",
+      "// Regular function",
+      "int add(int a, int b) { return a + b; }",
+      "",
+      "// Member function",
+      "struct Foo {",
+      "    int value = 10;",
+      "    int multiply(int x) { return value * x; }",
+      "};",
+      "",
+      "// Works with all callable types",
+      "auto result1 = std::invoke(add, 5, 3);",
+      "",
+      "Foo foo;",
+      "auto result2 = std::invoke(&Foo::multiply, foo, 2);",
+      "auto result3 = std::invoke(&Foo::value, foo);",
+      "",
+      "// Lambda",
+      "auto lambda = [](int x) { return x * x; };",
+      "auto result4 = std::invoke(lambda, 5);",
+      "$0"
+    ],
+    "description": "C++17 std::invoke"
+  },
+
+  "cpp_17__std_apply": {
+    "prefix": "cpp_17__std_apply",
+    "body": [
+      "// C++17: std::apply",
+      "#include <tuple>",
+      "#include <functional>",
+      "",
+      "// Function to call",
+      "int add(int a, int b, int c) {",
+      "    return a + b + c;",
+      "}",
+      "",
+      "// Tuple of arguments",
+      "std::tuple<int, int, int> args(1, 2, 3);",
+      "",
+      "// Apply tuple as arguments",
+      "auto result = std::apply(add, args); // result = 6",
+      "",
+      "// With lambda",
+      "auto t = std::make_tuple(\"Hello\", \" \", \"World\");",
+      "auto concat = std::apply(",
+      "    [](const auto&... args) {",
+      "        return (args + ...);",
+      "    }, t);",
+      "$0"
+    ],
+    "description": "C++17 std::apply"
+  },
+
+  "cpp_17__std_make_from_tuple": {
+    "prefix": "cpp_17__std_make_from_tuple",
+    "body": [
+      "// C++17: std::make_from_tuple",
+      "#include <tuple>",
+      "",
+      "struct Point {",
+      "    int x, y, z;",
+      "    Point(int x, int y, int z) : x(x), y(y), z(z) {}",
+      "};",
+      "",
+      "// Create object from tuple",
+      "auto t = std::make_tuple(10, 20, 30);",
+      "auto point = std::make_from_tuple<Point>(t);",
+      "",
+      "// Works with any constructor",
+      "auto str_tuple = std::make_tuple(5, 'A');",
+      "auto str = std::make_from_tuple<std::string>(str_tuple);",
+      "$0"
+    ],
+    "description": "C++17 std::make_from_tuple"
+  },
+
+  "cpp_17__has_include": {
+    "prefix": "cpp_17__has_include",
+    "body": [
+      "// C++17: __has_include",
+      "",
+      "#if __has_include(<optional>)",
+      "    #include <optional>",
+      "    #define HAS_OPTIONAL 1",
+      "#else",
+      "    #define HAS_OPTIONAL 0",
+      "#endif",
+      "",
+      "#if __has_include(<filesystem>)",
+      "    #include <filesystem>",
+      "    namespace fs = std::filesystem;",
+      "#elif __has_include(<experimental/filesystem>)",
+      "    #include <experimental/filesystem>",
+      "    namespace fs = std::experimental::filesystem;",
+      "#endif",
+      "$0"
+    ],
+    "description": "C++17 __has_include"
+  },
+
+  "cpp_17__hex_float_literals": {
+    "prefix": "cpp_17__hex_float_literals",
+    "body": [
+      "// C++17: Hexadecimal floating-point literals",
+      "",
+      "// Format: 0x<hex-digits>.<hex-digits>p<exponent>",
+      "double d1 = 0x1.2p3;    // 1.125 * 2^3 = 9.0",
+      "double d2 = 0x1p-2;     // 1.0 * 2^-2 = 0.25",
+      "double d3 = 0x1.8p0;    // 1.5",
+      "double d4 = 0xA.Bp10;   // 10.6875 * 2^10 = 10944.0",
+      "",
+      "// Useful for exact representation",
+      "float exact_tenth = 0x1.999999999999Ap-4; // Exactly 0.1",
+      "$0"
+    ],
+    "description": "C++17 hexadecimal floating-point literals"
+  },
+
+  "cpp_17__u8_char_literals": {
+    "prefix": "cpp_17__u8_char_literals",
+    "body": [
+      "// C++17: u8 character literals",
+      "",
+      "// UTF-8 character literal",
+      "char utf8_char = u8'x';",
+      "",
+      "// UTF-8 string literal",
+      "const char* utf8_str = u8\"Hello, 世界\";",
+      "",
+      "// Note: In C++20, u8 literals have type char8_t",
+      "// In C++17, they have type char",
+      "",
+      "// Check character value",
+      "static_assert(u8'A' == 65);",
+      "$0"
+    ],
+    "description": "C++17 u8 character literals"
+  },
+
+  "cpp_17__switch_with_initializer": {
+    "prefix": "cpp_17__switch_with_initializer",
+    "body": [
+      "// C++17: switch with initializer",
+      "",
+      "// Switch with initializer",
+      "switch (auto val = get_value(); val) {",
+      "case 1:",
+      "    handle_one(val);",
+      "    break;",
+      "case 2:",
+      "    handle_two(val);",
+      "    break;",
+      "default:",
+      "    handle_default(val);",
+      "}",
+      "",
+      "// Useful with enums",
+      "switch (Status s = get_status(); s) {",
+      "case Status::OK:",
+      "    return process(s);",
+      "case Status::ERROR:",
+      "    return handle_error(s);",
+      "}",
+      "$0"
+    ],
+    "description": "C++17 switch with initializer"
+  },
+
+  "cpp_17__scoped_lock": {
+    "prefix": "cpp_17__scoped_lock",
+    "body": [
+      "// C++17: std::scoped_lock",
+      "#include <mutex>",
+      "",
+      "std::mutex m1, m2, m3;",
+      "",
+      "// Lock multiple mutexes without deadlock",
+      "{",
+      "    std::scoped_lock lock(m1, m2, m3);",
+      "    // All mutexes locked",
+      "} // All mutexes unlocked",
+      "",
+      "// Single mutex (similar to lock_guard)",
+      "{",
+      "    std::scoped_lock lock(m1);",
+      "    // Critical section",
+      "}",
+      "",
+      "// Empty lock (no-op)",
+      "std::scoped_lock lock{}; // Valid, does nothing",
+      "$0"
+    ],
+    "description": "C++17 std::scoped_lock"
+  },
+
+  "cpp_17__shared_mutex": {
+    "prefix": "cpp_17__shared_mutex",
+    "body": [
+      "// C++17: std::shared_mutex",
+      "#include <shared_mutex>",
+      "#include <mutex>",
+      "",
+      "class ThreadSafeCounter {",
+      "    mutable std::shared_mutex mutex_;",
+      "    int value_ = 0;",
+      "public:",
+      "    // Multiple readers",
+      "    int get() const {",
+      "        std::shared_lock lock(mutex_);",
+      "        return value_;",
+      "    }",
+      "",
+      "    // Single writer",
+      "    void increment() {",
+      "        std::unique_lock lock(mutex_);",
+      "        ++value_;",
+      "    }",
+      "",
+      "    // Try to acquire read lock",
+      "    std::optional<int> try_get() const {",
+      "        std::shared_lock lock(mutex_, std::try_to_lock);",
+      "        if (lock) return value_;",
+      "        return std::nullopt;",
+      "    }",
+      "};",
+      "$0"
+    ],
+    "description": "C++17 std::shared_mutex"
+  },
+
+  "cpp_17__std_sample": {
+    "prefix": "cpp_17__std_sample",
+    "body": [
+      "// C++17: std::sample",
+      "#include <algorithm>",
+      "#include <random>",
+      "#include <iterator>",
+      "",
+      "std::vector<int> population = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};",
+      "std::vector<int> sample(5);",
+      "",
+      "std::random_device rd;",
+      "std::mt19937 gen(rd());",
+      "",
+      "// Sample 5 random elements",
+      "std::sample(population.begin(), population.end(),",
+      "            sample.begin(), 5, gen);",
+      "",
+      "// Sample to output iterator",
+      "std::sample(population.begin(), population.end(),",
+      "            std::ostream_iterator<int>(std::cout, \" \"),",
+      "            3, gen);",
+      "$0"
+    ],
+    "description": "C++17 std::sample"
+  },
+
+  "cpp_17__std_clamp": {
+    "prefix": "cpp_17__std_clamp",
+    "body": [
+      "// C++17: std::clamp",
+      "#include <algorithm>",
+      "",
+      "// Clamp value between min and max",
+      "int value = 15;",
+      "int clamped = std::clamp(value, 0, 10); // Returns 10",
+      "",
+      "// Works with any comparable type",
+      "double d = 2.5;",
+      "double clamped_d = std::clamp(d, 0.0, 1.0); // Returns 1.0",
+      "",
+      "// Custom comparator",
+      "auto comp = [](const auto& a, const auto& b) {",
+      "    return std::abs(a) < std::abs(b);",
+      "};",
+      "int result = std::clamp(-15, -10, 10, comp);",
+      "$0"
+    ],
+    "description": "C++17 std::clamp"
+  },
+
+  "cpp_17__std_gcd_lcm": {
+    "prefix": "cpp_17__std_gcd_lcm",
+    "body": [
+      "// C++17: std::gcd and std::lcm",
+      "#include <numeric>",
+      "",
+      "// Greatest Common Divisor",
+      "int a = 48, b = 18;",
+      "int gcd_result = std::gcd(a, b); // 6",
+      "",
+      "// Least Common Multiple",
+      "int lcm_result = std::lcm(a, b); // 144",
+      "",
+      "// Works with different integral types",
+      "long long x = 12LL;",
+      "int y = 8;",
+      "auto gcd_xy = std::gcd(x, y); // 4",
+      "",
+      "// Useful for fractions",
+      "struct Fraction {",
+      "    int num, den;",
+      "    void reduce() {",
+      "        int g = std::gcd(num, den);",
+      "        num /= g; den /= g;",
+      "    }",
+      "};",
+      "$0"
+    ],
+    "description": "C++17 std::gcd and std::lcm"
+  },
+
+  "cpp_17__std_as_const": {
+    "prefix": "cpp_17__std_as_const",
+    "body": [
+      "// C++17: std::as_const",
+      "#include <utility>",
+      "",
+      "std::vector<int> v = {1, 2, 3};",
+      "",
+      "// Get const reference to avoid copying",
+      "const auto& cv = std::as_const(v);",
+      "",
+      "// Useful for calling const overloads",
+      "class Widget {",
+      "public:",
+      "    void process() { std::cout << \"non-const\\n\"; }",
+      "    void process() const { std::cout << \"const\\n\"; }",
+      "};",
+      "",
+      "Widget w;",
+      "w.process();                    // calls non-const",
+      "std::as_const(w).process();     // calls const",
+      "$0"
+    ],
+    "description": "C++17 std::as_const"
+  },
+
+  "cpp_17__std_size_empty_data": {
+    "prefix": "cpp_17__std_size_empty_data",
+    "body": [
+      "// C++17: std::size, std::empty, std::data",
+      "#include <iterator>",
+      "",
+      "// Works with arrays and containers",
+      "int arr[] = {1, 2, 3, 4, 5};",
+      "auto arr_size = std::size(arr);        // 5",
+      "auto arr_empty = std::empty(arr);      // false",
+      "auto arr_data = std::data(arr);        // pointer to first element",
+      "",
+      "std::vector<int> vec = {1, 2, 3};",
+      "auto vec_size = std::size(vec);        // 3",
+      "auto vec_empty = std::empty(vec);      // false",
+      "auto vec_data = std::data(vec);        // pointer to first element",
+      "",
+      "// Safer than sizeof(arr)/sizeof(arr[0])",
+      "for (std::size_t i = 0; i < std::size(arr); ++i) {",
+      "    std::cout << arr[i] << \" \";",
+      "}",
+      "$0"
+    ],
+    "description": "C++17 std::size, std::empty, std::data"
+  },
+
+  "cpp_17__std_launder": {
+    "prefix": "cpp_17__std_launder",
+    "body": [
+      "// C++17: std::launder",
+      "#include <new>",
+      "",
+      "// Used for accessing object through pointer after placement new",
+      "struct X {",
+      "    const int n;",
+      "    X(int n) : n(n) {}",
+      "};",
+      "",
+      "alignas(X) std::byte storage[sizeof(X)];",
+      "",
+      "// Create object",
+      "X* p = new(&storage) X{42};",
+      "",
+      "// Destroy and create new object",
+      "p->~X();",
+      "new(&storage) X{13};",
+      "",
+      "// Need launder to access through old pointer",
+      "int n = std::launder(p)->n; // OK, n = 13",
+      "$0"
+    ],
+    "description": "C++17 std::launder"
+  },
+
+  "cpp_17__template_auto": {
+    "prefix": "cpp_17__template_auto",
+    "body": [
+      "// C++17: Template parameter deduction with auto",
+      "",
+      "// Non-type template parameter with auto",
+      "template<auto N>",
+      "struct constant {",
+      "    static constexpr auto value = N;",
+      "};",
+      "",
+      "// Can deduce the type",
+      "constant<5> c1;        // N is int",
+      "constant<'A'> c2;      // N is char",
+      "constant<2.5> c3;      // Error: floating point not allowed",
+      "",
+      "// Multiple auto parameters",
+      "template<auto... Values>",
+      "struct value_list {};",
+      "",
+      "value_list<1, 'a', true> values;",
+      "$0"
+    ],
+    "description": "C++17 template auto"
+  },
+
+  "cpp_17__aggregate_initialization": {
+    "prefix": "cpp_17__aggregate_initialization",
+    "body": [
+      "// C++17: Extended aggregate initialization",
+      "",
+      "// Base classes in aggregates",
+      "struct Base {",
+      "    int x;",
+      "};",
+      "",
+      "struct Derived : Base {",
+      "    int y;",
+      "};",
+      "",
+      "// C++17 allows this",
+      "Derived d{{1}, 2}; // Base::x = 1, Derived::y = 2",
+      "",
+      "// Designated initializers (C++20, but worth noting)",
+      "struct Point3D {",
+      "    int x = 0;",
+      "    int y = 0;",
+      "    int z = 0;",
+      "};",
+      "",
+      "// C++17 style",
+      "Point3D p1{1, 2, 3};",
+      "Point3D p2{1, 2};     // z = 0 (default)",
+      "$0"
+    ],
+    "description": "C++17 extended aggregate initialization"
+  },
+
+  "cpp_17__type_traits_helpers": {
+    "prefix": "cpp_17__type_traits_helpers",
+    "body": [
+      "// C++17: Type traits helper variables",
+      "#include <type_traits>",
+      "",
+      "// C++14 way",
+      "std::is_integral<int>::value;",
+      "std::is_same<int, int>::value;",
+      "",
+      "// C++17 way with _v suffix",
+      "std::is_integral_v<int>;",
+      "std::is_same_v<int, int>;",
+      "std::is_pointer_v<int*>;",
+      "std::is_const_v<const int>;",
+      "",
+      "// Conjunction, disjunction, negation",
+      "template<typename T>",
+      "constexpr bool is_string_like = std::disjunction_v<",
+      "    std::is_same<T, std::string>,",
+      "    std::is_same<T, std::string_view>,",
+      "    std::is_same<T, const char*>",
+      ">;",
+      "$0"
+    ],
+    "description": "C++17 type traits helpers"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "Boost Beast HTTP Get": {
+    "prefix": "bb_http_get",
+    "body": [
+      "namespace http = boost::beast::http;",
+      "namespace net = boost::asio;",
+      "namespace ip = net::ip;",
+      "",
+      "net::io_context ioc;",
+      "tcp::resolver resolver(ioc);",
+      "boost::beast::tcp_stream stream(ioc);",
+      "",
+      "auto const results = resolver.resolve(\"${1:host}\", \"${2:port}\");",
+      "stream.connect(results);",
+      "",
+      "http::request<http::string_body> req{http::verb::get, \"${3:/}\", ${4:11}};",
+      "req.set(http::field::host, \"${1:host}\");",
+      "req.set(http::field::user_agent, BOOST_BEAST_VERSION_STRING);",
+      "",
+      "http::write(stream, req);",
+      "",
+      "boost::beast::flat_buffer buffer;",
+      "http::response<http::string_body> res;",
+      "http::read(stream, buffer, res);",
+      "",
+      "std::cout << res << std::endl;",
+      "",
+      "boost::system::error_code ec;",
+      "stream.socket().shutdown(tcp::socket::shutdown_both, ec);",
+      "if(ec && ec != boost::system::errc::not_connected) throw boost::system::system_error{ec};"
+    ],
+    "description": "Boost Beast HTTP GET request example"
+  }
+}

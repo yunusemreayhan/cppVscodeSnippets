@@ -1,0 +1,343 @@
+{
+  "RAII Principle": {
+    "prefix": "cpp_best_practises__raii",
+    "body": [
+      "// Resource Acquisition Is Initialization (RAII)",
+      "// Example: Using std::lock_guard for mutex management",
+      "std::mutex mtx;",
+      "void func() {",
+      "    std::lock_guard<std::mutex> lock(mtx); // Lock acquired",
+      "    // Critical section",
+      "} // Lock released automatically when lock goes out of scope"
+    ],
+    "description": "Snippet for RAII principle with std::lock_guard example"
+  },
+  "Use const Correctly": {
+    "prefix": "cpp_best_practises__useconst",
+    "body": [
+      "// Use const for immutability and clarity",
+      "void print_vector(const std::vector<int>& vec) {",
+      "    // vec cannot be modified inside this function",
+      "    for (int x : vec) {",
+      "        std::cout << x << \" \";",
+      "    }",
+      "    std::cout << std::endl;",
+      "}",
+      "",
+      "class MyClass {",
+      "public:",
+      "    int getValue() const { // const member function",
+      "        return value_;",
+      "    }",
+      "private:",
+      "    int value_;",
+      "};"
+    ],
+    "description": "Snippet for correct usage of const"
+  },
+  "Prefer Smart Pointers": {
+    "prefix": "cpp_best_practises__smartptr",
+    "body": [
+      "// Prefer smart pointers (std::unique_ptr, std::shared_ptr) over raw pointers",
+      "// std::unique_ptr for exclusive ownership",
+      "std::unique_ptr<MyObject> obj1 = std::make_unique<MyObject>();",
+      "obj1->doSomething();",
+      "",
+      "// std::shared_ptr for shared ownership",
+      "std::shared_ptr<MyObject> obj2 = std::make_shared<MyObject>();",
+      "std::shared_ptr<MyObject> obj3 = obj2; // Shared ownership",
+      "obj2->doSomethingElse();"
+    ],
+    "description": "Snippet for preferring smart pointers"
+  },
+  "Static Polymorphism (CRTP)": {
+    "prefix": "cpp_best_practises__crtp",
+    "body": [
+      "// Static Polymorphism using Curiously Recurring Template Pattern (CRTP)",
+      "template <typename Derived>",
+      "class Base {",
+      "public:",
+      "    void interface() {",
+      "        // Call the implementation in the derived class",
+      "        static_cast<Derived*>(this)->implementation();",
+      "    }",
+      "    // Common functionality can be defined here",
+      "};",
+      "",
+      "class ConcreteDerived : public Base<ConcreteDerived> {",
+      "public:",
+      "    void implementation() {",
+      "        std::cout << \"ConcreteDerived implementation\" << std::endl;",
+      "    }",
+      "};",
+      "",
+      "class AnotherDerived : public Base<AnotherDerived> {",
+      "public:",
+      "    void implementation() {",
+      "        std::cout << \"AnotherDerived implementation\" << std::endl;",
+      "    }",
+      "};",
+      "",
+      "// Usage:",
+      "// ConcreteDerived d1;",
+      "// d1.interface();",
+      "// AnotherDerived d2;",
+      "// d2.interface();"
+    ],
+    "description": "Snippet for Static Polymorphism using CRTP"
+  },
+  "Rule of Zero/Three/Five": {
+    "prefix": "cpp_best_practises__ruleof",
+    "body": [
+      "// Rule of Zero: If you don't define any of the special member functions (destructor, copy constructor, copy assignment, move constructor, move assignment), the compiler generates them for you.",
+      "// Rule of Three: If you define any of the destructor, copy constructor, or copy assignment operator, you should define all three.",
+      "// Rule of Five: With C++11, if you define any of the destructor, copy constructor, copy assignment operator, move constructor, or move assignment operator, you should define all five.",
+      "",
+      "class MyResource {",
+      "public:",
+      "    // Constructor",
+      "    MyResource() { /* acquire resource */ }",
+      "    // Destructor (Rule of Three/Five)",
+      "    ~MyResource() { /* release resource */ }",
+      "    // Copy Constructor (Rule of Three/Five)",
+      "    MyResource(const MyResource& other) { /* deep copy */ }",
+      "    // Copy Assignment Operator (Rule of Three/Five)",
+      "    MyResource& operator=(const MyResource& other) { /* deep copy */ return *this; }",
+      "    // Move Constructor (Rule of Five)",
+      "    MyResource(MyResource&& other) noexcept { /* move resource */ }",
+      "    // Move Assignment Operator (Rule of Five)",
+      "    MyResource& operator=(MyResource&& other) noexcept { /* move resource */ return *this; }",
+      "};"
+    ],
+    "description": "Snippet for Rule of Zero/Three/Five"
+  },
+  "Avoid Raw Loops": {
+    "prefix": "cpp_best_practises__avoidloops",
+    "body": [
+      "// Avoid raw loops; prefer standard library algorithms (e.g., std::for_each, std::transform, std::accumulate, std::find, std::sort)",
+      "// Bad:",
+      "// for (int i = 0; i < vec.size(); ++i) {",
+      "//     std::cout << vec[i] << \" \";",
+      "// }",
+      "// Good:",
+      "std::vector<int> numbers = {1, 2, 3, 4, 5};",
+      "std::for_each(numbers.begin(), numbers.end(), [](int n) {",
+      "    std::cout << n << \" \";",
+      "});",
+      "std::cout << std::endl;",
+      "",
+      "// Example: Summing elements",
+      "int sum = std::accumulate(numbers.begin(), numbers.end(), 0);",
+      "std::cout << \"Sum: \" << sum << std::endl;"
+    ],
+    "description": "Snippet for avoiding raw loops and preferring algorithms"
+  },
+  "Use override and final": {
+    "prefix": "cpp_best_practises__overridefinal",
+    "body": [
+      "// Use 'override' to explicitly state that a member function is overriding a virtual function in a base class.",
+      "// Use 'final' to prevent a virtual function from being overridden in a derived class, or to prevent a class from being inherited.",
+      "",
+      "class Base {",
+      "public:",
+      "    virtual void doSomething() {",
+      "        std::cout << \"Base::doSomething\" << std::endl;",
+      "    }",
+      "    virtual void doSomethingElse() final {",
+      "        std::cout << \"Base::doSomethingElse (final)\" << std::endl;",
+      "    }",
+      "};",
+      "",
+      "class Derived : public Base {",
+      "public:",
+      "    void doSomething() override { // Explicitly override",
+      "        std::cout << \"Derived::doSomething\" << std::endl;",
+      "    }",
+      "    // void doSomethingElse() override; // ERROR: cannot override final function",
+      "};",
+      "",
+      "// class FinalClass final { /* ... */ }; // Prevents further inheritance"
+    ],
+    "description": "Snippet for using override and final keywords"
+  },
+  "Prefer enum class over plain enum": {
+    "prefix": "cpp_best_practises__enumclass",
+    "body": [
+      "// Prefer 'enum class' (scoped enums) over plain 'enum' for type safety and to avoid name collisions.",
+      "// Bad:",
+      "// enum Color { RED, GREEN, BLUE };",
+      "// enum CarType { SEDAN, SUV, RED }; // Name collision with Color::RED",
+      "// Good:",
+      "enum class Color { RED, GREEN, BLUE };",
+      "enum class CarType { SEDAN, SUV, TRUCK };",
+      "",
+      "// Usage:",
+      "// Color c = Color::RED;",
+      "// CarType ct = CarType::SUV;"
+    ],
+    "description": "Snippet for preferring enum class"
+  },
+  "Use nullptr instead of NULL or 0": {
+    "prefix": "cpp_best_practises__nullptr",
+    "body": [
+      "// Use 'nullptr' for null pointer constants. It is type-safe and avoids ambiguities.",
+      "// Bad:",
+      "// int* ptr1 = NULL;",
+      "// int* ptr2 = 0;",
+      "// Good:",
+      "int* ptr3 = nullptr;",
+      "",
+      "// Example with overloaded functions:",
+      "// void func(int);",
+      "// void func(char*);",
+      "// func(NULL); // Ambiguous, might call func(int)",
+      "// func(nullptr); // Clearly calls func(char*)"
+    ],
+    "description": "Snippet for using nullptr"
+  },
+  "Prefer std::string_view": {
+    "prefix": "cpp_best_practises__stringview",
+    "body": [
+      "// Prefer std::string_view for string parameters that don't need to own the string (C++17 and later).",
+      "// It avoids unnecessary string copies and allocations.",
+      "// Bad:",
+      "// void print_name(const std::string& name) { std::cout << name << std::endl; }",
+      "// Good:",
+      "void print_name(std::string_view name) {",
+      "    std::cout << name << std::endl;",
+      "}",
+      "",
+      "// Usage:",
+      "// std::string s = \"Hello\";",
+      "// print_name(s);",
+      "// print_name(\"World\");"
+    ],
+    "description": "Snippet for preferring std::string_view"
+  },
+  "Const Member Functions": {
+    "prefix": "cpp_best_practises__constmember",
+    "body": [
+      "// Use 'const' for member functions that do not modify the object's state.",
+      "// This allows them to be called on const objects and provides better compile-time checking.",
+      "class MyClass {",
+      "public:",
+      "    MyClass(int val) : value_(val) {}",
+      "",
+      "    int getValue() const { // This function does not modify 'value_'",
+      "        return value_;",
+      "    }",
+      "",
+      "    void setValue(int val) { // This function modifies 'value_'",
+      "        value_ = val;",
+      "    }",
+      "",
+      "private:",
+      "    int value_;",
+      "};",
+      "",
+      "// Usage:",
+      "// const MyClass obj(10);",
+      "// std::cout << obj.getValue() << std::endl; // OK",
+      "// obj.setValue(20); // ERROR: cannot call non-const function on const object"
+    ],
+    "description": "Snippet for const member functions"
+  },
+  "Use noexcept": {
+    "prefix": "cpp_best_practises__noexcept",
+    "body": [
+      "// Use 'noexcept' for functions that are guaranteed not to throw exceptions.",
+      "// This allows the compiler to generate more optimized code and improves exception safety.",
+      "void func_that_does_not_throw() noexcept {",
+      "    // This function is guaranteed not to throw",
+      "    std::cout << \"This function is noexcept.\" << std::endl;",
+      "}",
+      "",
+      "// Example: Move constructor/assignment should often be noexcept",
+      "class MyMovableClass {",
+      "public:",
+      "    MyMovableClass() = default;",
+      "    MyMovableClass(MyMovableClass&& other) noexcept {",
+      "        // Move resources, ensure no exceptions",
+      "    }",
+      "    MyMovableClass& operator=(MyMovableClass&& other) noexcept {",
+      "        // Move resources, ensure no exceptions",
+      "        return *this;",
+      "    }",
+      "};"
+    ],
+    "description": "Snippet for using noexcept"
+  },
+  "Prefer std::array or std::vector": {
+    "prefix": "cpp_best_practises__stdarrayvector",
+    "body": [
+      "// Prefer std::array or std::vector over C-style arrays for better type safety, bounds checking, and easier memory management.",
+      "// std::array for fixed-size arrays:",
+      "std::array<int, 5> arr = {1, 2, 3, 4, 5};",
+      "std::cout << \"std::array size: \" << arr.size() << std::endl;",
+      "",
+      "// std::vector for dynamic-size arrays:",
+      "std::vector<double> vec = {1.1, 2.2, 3.3};",
+      "vec.push_back(4.4);",
+      "std::cout << \"std::vector size: \" << vec.size() << std::endl;",
+      "",
+      "// Accessing elements:",
+      "// std::cout << arr[0] << \", \" << vec.at(1) << std::endl;"
+    ],
+    "description": "Snippet for preferring std::array or std::vector"
+  },
+  "Use nodiscard": {
+    "prefix": "cpp_best_practises__nodiscard",
+    "body": [
+      "// Use the [[nodiscard]] attribute for functions whose return values should not be ignored.",
+      "// This helps prevent common programming errors where a function's result is crucial but not used.",
+      "[[nodiscard]] int calculate_sum(int a, int b) {",
+      "    return a + b;",
+      "}",
+      "",
+      "// Usage:",
+      "// calculate_sum(1, 2); // Compiler warning/error if return value is ignored",
+      "// int result = calculate_sum(3, 4); // OK"
+    ],
+    "description": "Snippet for using nodiscard attribute"
+  },
+  "Prefer make_unique/make_shared": {
+    "prefix": "cpp_best_practises__makepointer",
+    "body": [
+      "// Prefer std::make_unique and std::make_shared for creating smart pointers.",
+      "// They provide exception safety and can be more efficient.",
+      "// Bad:",
+      "// std::unique_ptr<MyObject> obj1(new MyObject());",
+      "// std::shared_ptr<MyObject> obj2(new MyObject());",
+      "// Good:",
+      "std::unique_ptr<MyObject> obj3 = std::make_unique<MyObject>();",
+      "std::shared_ptr<MyObject> obj4 = std::make_shared<MyObject>();",
+      "",
+      "// For arrays with unique_ptr:",
+      "// std::unique_ptr<int[]> arr = std::make_unique<int[]>(10);"
+    ],
+    "description": "Snippet for preferring make_unique/make_shared"
+  },
+  "Use explicit for single-argument constructors": {
+    "prefix": "cpp_best_practises__explicitctor",
+    "body": [
+      "// Use 'explicit' for single-argument constructors to prevent unintended implicit conversions.",
+      "class MyClass {",
+      "public:",
+      "    // Bad: Allows implicit conversion from int to MyClass",
+      "    // MyClass(int size) : data_(size) {}",
+      "",
+      "    // Good: Requires explicit conversion",
+      "    explicit MyClass(int size) : data_(size) {}",
+      "",
+      "private:",
+      "    std::vector<int> data_;",
+      "};",
+      "",
+      "// Usage:",
+      "// MyClass obj1 = 10; // ERROR if constructor is explicit",
+      "// MyClass obj2(10); // OK",
+      "// MyClass obj3 = static_cast<MyClass>(10); // OK with explicit cast"
+    ],
+    "description": "Snippet for using explicit for single-argument constructors"
+  }
+}

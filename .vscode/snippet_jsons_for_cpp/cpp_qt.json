@@ -1,0 +1,29 @@
+{
+  "Qt QApplication": {
+    "prefix": "qt_app",
+    "body": [
+      "#include <QApplication>",
+      "#include <QLabel>",
+      "",
+      "int main(int argc, char *argv[]) {",
+      "  QApplication app(argc, argv);",
+      "",
+      "  QLabel label(\"${1:Hello, Qt!}\");",
+      "  label.show();",
+      "",
+      "  return app.exec();",
+      "}"
+    ],
+    "description": "Basic Qt QApplication setup"
+  },
+  "Qt QPushButton": {
+    "prefix": "qt_button",
+    "body": [
+      "#include <QPushButton>",
+      "",
+      "QPushButton *${1:button} = new QPushButton(\"${2:Click Me}\");",
+      "${1:button}->show();"
+    ],
+    "description": "Create a QPushButton"
+  }
+}

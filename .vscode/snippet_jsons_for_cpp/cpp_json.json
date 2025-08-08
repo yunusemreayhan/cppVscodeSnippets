@@ -1,0 +1,24 @@
+{
+  "Nlohmann JSON Include": {
+    "prefix": "json_include",
+    "body": [
+      "#include <nlohmann/json.hpp>"
+    ],
+    "description": "Include nlohmann/json header"
+  },
+  "Nlohmann JSON Object": {
+    "prefix": "json_object",
+    "body": [
+      "nlohmann::json ${1:j};",
+      "${1:j}[\"${2:key}\"] = ${3:value};"
+    ],
+    "description": "Create a nlohmann::json object"
+  },
+  "Nlohmann JSON Parse String": {
+    "prefix": "json_parse_string",
+    "body": [
+      "auto ${1:j} = nlohmann::json::parse(${2:json_string});"
+    ],
+    "description": "Parse JSON from a string"
+  }
+}

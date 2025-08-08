@@ -1,0 +1,16 @@
+{
+  "FMT Print": {
+    "prefix": "fmt_print",
+    "body": [
+      "fmt::print(\"${1:Hello, {}}\", ${2:\"world\"});"
+    ],
+    "description": "Insert fmt::print statement"
+  },
+  "FMT Format": {
+    "prefix": "fmt_format",
+    "body": [
+      "fmt::format(\"${1:The answer is {}.}\", ${2:42});"
+    ],
+    "description": "Insert fmt::format statement"
+  }
+}

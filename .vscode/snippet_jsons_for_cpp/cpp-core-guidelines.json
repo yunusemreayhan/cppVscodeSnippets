@@ -1,0 +1,101 @@
+{
+  "C.1: Prefer concrete types over type aliases for parameters": {
+    "prefix": "cpp_core_guidelines__c1",
+    "body": [
+      "// C.1: Prefer concrete types over type aliases for parameters",
+      "// Bad:",
+      "// using Index = int;",
+      "// void f(Index i);",
+      "// Good:",
+      "void f(int i); // Clearly indicates an integer parameter"
+    ],
+    "description": "Snippet for C.1: Prefer concrete types over type aliases for parameters"
+  },
+  "C.2: Use gsl::owner<T*> to indicate ownership": {
+    "prefix": "cpp_core_guidelines__c2",
+    "body": [
+      "// C.2: Use gsl::owner<T*> to indicate ownership",
+      "// gsl::owner is part of the Guidelines Support Library (GSL)",
+      "// Example: Function taking ownership of a pointer",
+      "void take_ownership(gsl::owner<MyObject*> obj) {",
+      "    std::unique_ptr<MyObject> p(obj); // Transfer ownership to unique_ptr",
+      "    // ... use p ...",
+      "} // obj is deleted when p goes out of scope"
+    ],
+    "description": "Snippet for C.2: Use gsl::owner<T*> to indicate ownership"
+  },
+  "F.20: For \"out\" parameters, prefer to return a pair or tuple": {
+    "prefix": "cpp_core_guidelines__f20",
+    "body": [
+      "// F.20: For \"out\" parameters, prefer to return a pair or tuple",
+      "// Bad:",
+      "// void get_values(int& x, int& y);",
+      "// Good:",
+      "std::pair<int, int> get_values() {",
+      "    int x = 10;",
+      "    int y = 20;",
+      "    return {x, y};",
+      "}",
+      "",
+      "// Usage:",
+      "// auto [val1, val2] = get_values();"
+    ],
+    "description": "Snippet for F.20: For \"out\" parameters, prefer to return a pair or tuple"
+  },
+  "R.1: Manage resources automatically using RAII": {
+    "prefix": "cpp_core_guidelines__r1",
+    "body": [
+      "// R.1: Manage resources automatically using RAII",
+      "// Example: File handling with RAII",
+      "class FileHandle {",
+      "public:",
+      "    FileHandle(const std::string& filename, const std::string& mode) {",
+      "        file_ = fopen(filename.c_str(), mode.c_str());",
+      "        if (!file_) {",
+      "            throw std::runtime_error(\"Failed to open file\");",
+      "        }",
+      "    }",
+      "    ~FileHandle() {",
+      "        if (file_) {",
+      "            fclose(file_);",
+      "        }",
+      "    }",
+      "    // Disable copy and assignment for unique resource",
+      "    FileHandle(const FileHandle&) = delete;",
+      "    FileHandle& operator=(const FileHandle&) = delete;",
+      "",
+      "    // Add move semantics if needed",
+      "    FileHandle(FileHandle&& other) noexcept : file_(other.file_) {",
+      "        other.file_ = nullptr;",
+      "    }",
+      "    FileHandle& operator=(FileHandle&& other) noexcept {",
+      "        if (this != &other) {",
+      "            if (file_) fclose(file_);",
+      "            file_ = other.file_;",
+      "            other.file_ = nullptr;",
+      "        }",
+      "        return *this;",
+      "    }",
+      "",
+      "    FILE* get() const { return file_; }",
+      "",
+      "private:",
+      "    FILE* file_;",
+      "};",
+      "",
+      "void process_file(const std::string& filename) {",
+      "    try {",
+      "        FileHandle fh(filename, \"r\");",
+      "        // Use fh.get() to access the file pointer",
+      "        char buffer[256];",
+      "        while (fgets(buffer, sizeof(buffer), fh.get())) {",
+      "            std::cout << buffer;",
+      "        }",
+      "    } catch (const std::exception& e) {",
+      "        std::cerr << \"Error: \" << e.what() << std::endl;",
+      "    }",
+      "}"
+    ],
+    "description": "Snippet for R.1: Manage resources automatically using RAII"
+  }
+}
