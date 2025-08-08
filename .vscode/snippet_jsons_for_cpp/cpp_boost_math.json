@@ -1,0 +1,16 @@
+{
+  "Boost Math Constants": {
+    "prefix": "bm_const",
+    "body": [
+      "boost::math::constants::pi<double>()"
+    ],
+    "description": "Insert Boost Math pi constant"
+  },
+  "Boost Math Gamma Function": {
+    "prefix": "bm_gamma",
+    "body": [
+      "boost::math::tgamma(${1:x})"
+    ],
+    "description": "Insert Boost Math gamma function"
+  }
+}
